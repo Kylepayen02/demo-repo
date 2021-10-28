@@ -1,7 +1,8 @@
 LINTER = flake8
 API_DIR = API
 DB_DIR = db
-REQ_DIR = requirements
+REQ_DIR = . 
+PYDOC = python3 -m mydoc -w
 
 FORCE:
 
@@ -14,7 +15,7 @@ github: FORCE
 tests: lint unit
 
 unit: FORCE
-	echo "Tests go here!"
+	cd $(API_DIR); nosetests --with-coverage --cover-package=$(API_DIR)
 
 lint: FORCE
 	$(LINTER) $(API_DIR)/*.py
@@ -24,4 +25,5 @@ dev_env: FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
 
 docs: FORCE
-	cd $(API_DIR); make docs
+	$(PYDOC) $(API_DIR)/*.py
+	$(PYDOC) $(DB_DIR)/*.py
